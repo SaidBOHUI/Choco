@@ -1,0 +1,25 @@
+{% extends 'base_admin.html.twig' %}
+
+{% block title %}Edit Product{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1 class = 'text-center'>Edit Product</h1>
+
+        {{ include('product/_form.html.twig', {'button_label': 'Update'}) }}
+	
+        <div class="text-center">
+            <a href="{{ path('product_index') }}" class="btn btn-retour">&#x2190; back to list</a>
+        </div>	
+    </div>
+{% endblock %}
+{% block javascripts %}
+	<script>
+              
+		let inputImage = document.getElementById('product_imgProduct')
+		inputImage.addEventListener('change',()=>{
+				document.getElementById('output_img').textContent = inputImage.files[0].name
+			})
+			
+	</script>
+{% endblock %}

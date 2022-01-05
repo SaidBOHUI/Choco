@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Reset password{% endblock %}
+{% block navstart %}{% endblock %}
+
+{% block body %}
+    <div class="container text-center">
+        <h3>Order registered</h2>
+        <div class="row">
+            <div class="col-lg-5 m-auto">
+                <div class="card mt-2">
+                    <div class="card-body rounded">
+                            <h3>Congratulations, a confirmation email has ben sent to you</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="text-center mb-4 mt-4">
+        <p>
+            <a href="{{ path('home') }}" class="btn btn-add-panier">Come-back to the HomePage</a>
+        </p>
+    </div>
+{% endblock %}
+{% block instagram %}{% endblock %}
+{% block social_footer %}{% endblock %}

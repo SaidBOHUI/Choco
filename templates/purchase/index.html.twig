@@ -1,0 +1,37 @@
+{% extends 'base_admin.html.twig' %}
+
+{% block title %}Purchases management{% endblock %}
+
+{% block body %}
+   
+    <div class="container">
+        <h1 class='text-center'>purchases management</h1>
+
+        <table class="table text-center">
+            <thead>
+                <tr>
+                    <th>Order n°</th>
+                    <th>Name of the client</th>
+                    <th>creation's date</th>
+                    <th>Invoice</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for purchase in purchases %}
+                <tr>
+                    <td>{{ purchase.id }}</td>
+                    <td>{{ purchase.fullName }}</td>
+                    <td>{{ purchase.createdAt|date('Y-m-d') }}</td>
+		    <td><a href="{{ path('facture', {'id': purchase.id}) }}" target='_blank' >Upload</a></td>
+		        </tr>
+            {% else %}
+                <tr>
+                    <td colspan="10">no records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}
+

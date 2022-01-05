@@ -1,0 +1,21 @@
+    <p>Required fields*</p>
+    {{ form_start(form) }}
+    <div class='mb-5'>
+        {{ form_row(form.name) }}
+    </div>
+
+    <div class='mb-5'>
+        {{ form_row(form.image) }}
+    </div>
+
+    <div class='mb-5'>
+        {{ form_row(form.alternativeText) }}
+    </div>
+    
+    <div class='mb-5'>
+        {{ form_row(form.banner) }}
+    </div>
+    <button class="btn btn-val">&#10004; {{ button_label|default('Save') }}</button>
+    {{ form_end(form) }}
+
+

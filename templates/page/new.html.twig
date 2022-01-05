@@ -1,0 +1,142 @@
+{% extends 'base_admin.html.twig' %}
+
+{% block title %}New Page{% endblock %}
+
+{% form_theme form _self %}
+
+{% block _page_article_widget %}
+    {{ form_widget(form) }}
+    <button type='button' id='add-article' class="btn btn-add-panier">
+        add an full article
+    </button>  
+{% endblock %}
+
+{% block _page_textArticles_widget %}
+    {{ form_widget(form)}}
+    <button type='button' id='add-text-articles' class="btn btn-add-panier">
+            add a text article
+    </button>  
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1 class='text-center'>Create new Page</h1>
+
+        {{ include('page/_form.html.twig') }}
+
+	<div class="text-center mb-4">
+		<a href="{{ path('page_index') }}" class="btn btn-retour">&#x2190; back to list</a>
+	</div>
+
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+  
+            /*AJOUTER UN ARTICLE*/
+                let $container = $('#page_article');
+
+                let index = $container.find(':input').length;
+
+            $('#add-article').click(function(e){
+                    e.preventDefault();
+                    addArticle($container);
+                let input = document.querySelectorAll('.custom-file-input') 
+                let output = document.querySelectorAll('small')
+
+                for (let index = 0; index < input.length; index++) {
+                    const element = input[index];
+
+                    element.addEventListener("change", function() {
+                                            
+                        output[index].textContent = element.files[0].name
+                    
+                    });
+                }
+
+            });
+
+        function addArticle($container){
+
+            let tmp = $container.attr('data-prototype')
+            .replace(/__name__label/g, 'Article n° ' + (index + 1))
+            .replace(/__name/g, index);
+
+
+            let $prototype = $(tmp) ;
+
+            deleteArticle($prototype)
+
+            $container.append($prototype);
+
+            index++;
+        }
+
+    /*SUPPRIMER UN ARTICLE*/
+        function deleteArticle($prototype){
+
+            let $deleteLink = $('<a href="#" class="btn btn-danger">Annuler</a>');
+
+            $prototype.append($deleteLink);
+
+            $deleteLink.click(function (e) {
+
+                $prototype.remove();
+
+                e.preventDefault(); // évite qu'un # apparaisse dans l'url
+
+                return false;
+            })
+        }            
+
+        /*********************************************************************/
+        /*                           ADD TEXTARTICLE
+        / ********************************************************************/
+                let $textcontainer = $('#page_textArticles');
+
+                let textindex = $textcontainer.find(':input').length;
+
+            $('#add-text-articles').click(function(e){
+                    e.preventDefault();
+                    addTextArticle($textcontainer);
+            });
+
+        function addTextArticle($textcontainer){
+
+            let tmp = $textcontainer.attr('data-prototype')
+            .replace(/__name__label/g, 'TextArticle n° ' + (textindex + 1))
+            .replace(/__name/g, textindex);
+
+            let $prototype = $(tmp) ;
+
+            deleteTextArticle($prototype)
+
+            $textcontainer.append($prototype);
+
+            textindex++;
+        }
+
+    /*SUPPRIMER UN ARTICLE*/
+        function deleteTextArticle($prototype){
+
+            let $deleteLink = $('<a href="#" class="btn btn-danger">Annuler</a>');
+
+            $prototype.append($deleteLink);
+
+            $deleteLink.click(function (e) {
+
+                $prototype.remove();
+
+                e.preventDefault(); // évite qu'un # apparaisse dans l'url
+
+                return false;
+            })
+        }            
+    </script>    
+{% endblock %}
+
+
+
+
+

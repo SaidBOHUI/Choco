@@ -1,0 +1,9 @@
+<div class="single-mega">
+	<ul>
+		{% for prod in product %}
+			<li>
+				<a href="{{path('product_show',{'id' : prod.id}) }}">{{ prod.name }}</a>
+			</li>
+		{% endfor %}
+    </ul>
+</div>

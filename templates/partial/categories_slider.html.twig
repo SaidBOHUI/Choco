@@ -1,0 +1,22 @@
+
+<section id="categories" class="hero-area section-padding-100">
+	<div class="hero-post-slides owl-carousel">
+
+{% for cat in categories %}
+	<div class="single-hero-post">
+		<div class="slide-img bg-img" style="background-image: url('{{ asset('images/upload/' ~ cat.image )}}');"></div>
+		<div class="hero-slides-content">
+			<a href="{{path('categories_show',{'id' : cat.id}) }}" class="post-title">
+				<h4 class:'text-align-center'>{{ cat.name|upper }}</h4>
+				{% if cat.name == 'Masterclasses' %}
+					<p>Online registration</p>
+				{% else %}
+					<p>Online ordering</p>
+				{% endif %}
+			</a>
+		</div>
+	</div>
+{% endfor %}
+
+	</div>
+</section>

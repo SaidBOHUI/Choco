@@ -1,0 +1,34 @@
+{% extends 'base_admin.html.twig' %}
+
+{% block body_class %}class="admin"{% endblock %}
+{% block subtitle %}My ChocoAdmin{% endblock %}
+
+{% block body %}
+
+
+    <h1 class="text-center admin-heading-home">Welcome to your administration interface.</h1>
+
+    <p>
+        Here is your administration board, you'll be able to see, edit or delete your categories, products and pages. Also, you can have access to the summary of your customer's order.
+    </p>
+
+
+    <div class="container-card-admin mt-30">
+
+        <a href="{{ path('categories_index')  }}" class="card-admin categories">
+            <span>categorie management</span>
+        </a>
+        <a href="{{ path('product_index')  }}" class="card-admin product">
+            <span>products management</span>
+        </a>
+        <a href="{{ path('page_index')  }}" class="card-admin page">
+            <span>Page management</span>
+        </a>
+        <a href="{{ path('purchase_index')  }}" class="card-admin purchase">
+            <span>Purchases list</span>
+        </a>
+    </div>
+  
+
+{% endblock %}
+

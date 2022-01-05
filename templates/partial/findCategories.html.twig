@@ -1,0 +1,12 @@
+<li>
+	<a href="#">Categories</a>
+	<div class="megamenu">
+		<ul class="single-mega">
+			{% for cat in categories %}
+				<li>
+					<a href="{{path('categories_show',{'id' : cat.id}) }}">{{ cat.name }}</a>
+				</li>
+			{% endfor %}
+		</ul>
+	</div>
+</li>

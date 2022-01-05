@@ -1,0 +1,209 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Your cart{% endblock %}
+
+ {% block body %}
+    <h1 class='text-center'>Your cart</h1>
+    <div class="text-center">
+        <button class='btn btn-sm btn-danger clear-cart mb-3' title="clear">
+            <a class='text-white' href="{{path('cart_reset')}}">Clear cart</a>
+        </button>
+    </div>
+    <div class="container">
+    <div id='message'></div>
+        <table class="table text-center">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th id='lineTotal'>SubTotal</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <div class='cartTable'>
+                <div id ='cart-loader' style="margin-top:10vh"></div>
+                <div id ='body-foot'>
+                    <tbody id="tbody"></tbody>
+                    <tfoot id='tfoot'>
+                        <tr>
+                            <td><strong>Total</strong></td>
+                            <td></td>
+                            <td></td>
+                            <td id="total"></td>
+                            <td><button class='btn btn-sm btn-add-panier mb-5' title="Order">
+                                    <a href="{{path('purchase_new')}}" class="text-white">Order</a>
+                                </button>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </div>
+            </div>
+        </table>
+    </div>
+
+
+ {% endblock %}
+
+{% block cart %}{% endblock %}
+{% block instagram %}{% endblock %}
+
+
+
+
+
+{% block javascripts %}
+    <script>
+
+    const deleteItem = ()=>{
+
+        let deleteCart = document.querySelectorAll('.delete-cart-item')
+        deleteCart.forEach(element => {
+            element.addEventListener('click', (e) =>{
+                let id = element.dataset.id
+                document.getElementById("cart-loader").classList.add("d-block");
+                sendData(id)
+            })
+		});
+    }
+
+    const increment = ()=>{
+
+        let plusTab = document.querySelectorAll('.increment')
+        plusTab.forEach(element => {
+            element.addEventListener('click', (e)=>{
+                let id = element.dataset.id
+                document.getElementById("cart-loader").classList.add("d-block");
+                sendDataPlus(id)
+            })
+        });
+    }
+
+    const decrement = ()=>{
+
+        let minusTab = document.querySelectorAll('.decrement')
+        minusTab.forEach(element => {
+            element.addEventListener('click', (e)=>{
+                let id = element.dataset.id
+                document.getElementById("cart-loader").classList.add("d-block");
+                sendDataMinus(id)
+            })
+        });
+    }
+
+       /**
+        * delete from cart          
+        * @param {string} id
+        */
+        const sendData = async (id) =>{
+            const response = await fetch(`/cart/delete/${id}`)
+            if(response.status == 200){
+                const data = await response.json()
+                showResponse(response.status)
+                getData()
+            }else{
+                showResponse(response.status)
+            }
+        }
+
+        /**
+        * increment qty        
+        * @param {string} id
+        */
+        const sendDataPlus = async (id) =>{
+            const response = await fetch(`/cart/increment/${id}`)
+            if(response.status == 200){
+                const dataPlus = await response.json()
+                showResponse(response.status)
+                getData()
+            }else{
+                showResponse(response.status)
+            }
+        }
+
+        /**
+        * decrement qty        
+        * @param {string} id
+        */
+        const sendDataMinus = async (id) =>{
+            const response = await fetch(`/cart/decrement/${id}`)
+            if(response.status == 200){
+                const dataPlus = await response.json()
+                showResponse(response.status)
+                getData()
+            }else{
+                showResponse(response.status)
+            }
+        }
+
+        /**
+        * Récupère la liste des produits dans le panier
+        **/
+       const getData = async () =>{
+           document.getElementById("cart-loader").classList.add("d-block")
+            const response = await fetch('/getCartList')
+            if(response.status == 200){
+                const data = await response.json()
+                updataList(data)   
+                deleteItem()
+                increment()
+                decrement()
+            }
+        }
+
+        /**
+        * Mets à jour la liste des produits dans le template
+        **/
+        const updataList = (data) =>{
+            //data.list c'est un array
+            let $tbody = document.getElementById("tbody")
+            let $total = document.getElementById('total')
+            let $tfoot = document.getElementById('tfoot')
+
+            const Total = data.total <= 1 ? `${data.total} DH` : `${data.total} DHS` 
+            $total.innerText = Total 
+
+
+            let $html = ""
+            let tfoot =""
+
+
+            // déclarer une variable vide  let html = ""
+              
+            if (data.list == false || data.list.length == 0) {
+                $html = '<td colspan="10">no records found</td>'
+                $tfoot.innerHTML = tfoot  
+            }
+
+            else{
+                data.list.forEach(element => {
+                    let lineTotal = `${element.price * element.qty}`
+                    $html += `<tr><td> ${element.name}</td><td>${element.price}</td><td>${element.qty}</td><td>${lineTotal <= 1 ? `${lineTotal} DH` : `${lineTotal} DHS`}</td><td><button class="btn btn-sm btn-add-panier decrement" title="decrement" data-id=${element.id}><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dash-lg" viewBox="0 0 16 16"><path d="M0 8a1 1 0 0 1 1-1h14a1 1 0 1 1 0 2H1a1 1 0 0 1-1-1z"/></svg></button><button class ="btn btn-sm btn-add-panier ml-1 mr-1 increment" title="increment" data-id=${element.id}><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16"><path d="M8 0a1 1 0 0 1 1 1v6h6a1 1 0 1 1 0 2H9v6a1 1 0 1 1-2 0V9H1a1 1 0 0 1 0-2h6V1a1 1 0 0 1 1-1z"/></svg></button><button class="btn btn-sm btn-danger delete-cart-item" title="delete" data-id=${element.id}><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="white" class="bi bi-trash-fill" viewBox="0 0 16 16"><path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"/></svg></button></td></tr>`
+                });
+            }
+            document.getElementById("cart-loader").classList.remove("d-block")
+            document.getElementById("tfoot").classList.remove("d-none")
+            $tbody.innerHTML = $html
+            
+        }
+
+       
+		const showResponse = (status) =>{
+			if(status === 201){
+               let message = document.getElementById('#message')
+				message.innerText = ""
+				setTimeout(() => {
+					message.innerText = ""
+				}, 1000);
+			}
+			else if(status === 404){
+ 				message.innerText = ""
+				setTimeout(() => {
+					message.innerText = ""
+				}, 1000);
+			}
+		}
+        getData() //
+   
+    </script>
+{% endblock %}

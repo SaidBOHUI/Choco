@@ -1,0 +1,210 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>Facture</title>
+    
+    <style>
+    .invoice-box {
+        max-width: 800px;
+        margin: auto;
+        padding: 30px;
+        border: 1px solid #eee;
+        box-shadow: 0 0 10px rgba(0, 0, 0, .15);
+        font-size: 14px;
+        line-height: 24px;
+        font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+        color: #555;
+    }
+    
+    .invoice-box table {
+        width: 100%;
+        line-height: inherit;
+        text-align: left;
+    }
+    
+    .invoice-box table td {
+        padding: 5px;
+        vertical-align: top;
+    }
+    
+    .invoice-box table tr td:nth-child(2) {
+        text-align: right;
+    }
+    
+    .invoice-box table tr.top table td {
+        padding-bottom: 10px;
+    }
+    
+    .invoice-box table tr.top table td.title {
+        font-size: 30px;
+        line-height: 30px;
+        color: #333;
+    }
+    
+    .invoice-box table tr.information table td {
+        padding-bottom: 30px;
+    }
+    
+    .invoice-box table tr.heading td {
+        background: black;
+        border-bottom: 1px solid #ddd;
+        font-weight: bold;
+        color:white;
+    }
+
+    td.heading {
+        background: black;
+        color:white;
+    }
+    .heading-2 {
+        color:black;
+    }
+
+    .heading-2 span {
+        font-size: 12px;
+        text-decoration: underline;
+        font-style: italic;
+
+    }
+
+    .heading-2 td {
+        border-top: 1px solid #D2D2D2;
+        border-bottom: 1px solid #D2D2D2;
+        border-left: 1px solid #D2D2D2;
+        border-right: 1px solid #D2D2D2;
+    }
+ 
+    .invoice-box table tr.details td {
+        padding-bottom: 10px;
+    }
+    
+    .invoice-box table tr.item td{
+        border-bottom: 1px solid #eee;
+    }
+    
+    .invoice-box table tr.item.last td {
+        border-bottom: none;
+    }
+    
+    .invoice-box table tr.total td:nth-child(2) {
+        border-top: 2px solid #eee;
+        font-weight: bold;
+    }
+
+    a{color:black}
+    a:hover{color:red}
+
+    
+    @media only screen and (max-width: 600px) {
+        .invoice-box table tr.top table td {
+            width: 100%;
+            display: block;
+            text-align: center;
+        }
+        
+        .invoice-box table tr.information table td {
+            width: 100%;
+            display: block;
+            text-align: center;
+        }
+    }
+    
+    /** RTL **/
+    .rtl {
+        direction: rtl;
+        font-family: Tahoma, 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+    }
+    
+    .rtl table {
+        text-align: right;
+    }
+    
+    .rtl table tr td:nth-child(2) {
+        text-align: left;
+    }
+    .small{font-size:11px}
+    .text-right{text-align:right}
+    </style>
+</head>
+<body>
+    <div class="invoice-box">
+        <table cellpadding="0" cellspacing="0">
+            <tr class="top">
+                <td colspan="2">
+                    <table>
+                        <tr>
+                            <td>
+                                {# <img src="{{ logo }}" alt="logo" style="width:200px"> #}Chocometry
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            
+            <tr class="information">
+                <td colspan="4">
+                    <table>
+                        <tr> 
+                              <td>Facture n° {{ purchase.id }}</td><br>
+                               <td>{{ purchase.createdAt|date("d/m/Y") }}</td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+      
+            <tr class="heading">
+                <td>Désignation</td>     
+		<td></td> 
+		<td></td> 
+                <td></td>
+            </tr>
+
+	<tr class="item"> 
+            <td>Name</td>
+            <td>Price</td>
+            <td>Quantity</td>
+            <td>subtotal</td>
+        </tr>
+
+        {% for prod in purchase.produit|reverse %}
+
+	<tr class="item">
+		<td>{{ prod.name}}</td> 
+		<td>{{ prod.price}}</td>
+		<td>{{ prod.qty}}</td>
+		<td>{{ prod.price * prod.qty}}</td> 
+	</tr>
+
+	{% endfor %}
+
+	<tr>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+	</tr>
+	<tr class="total">
+	    	<td></td>
+		<td></td>
+		<td></td>
+        <td class="heading">Total : {{ purchase.total }}</td>
+	</tr>
+	</table>
+    </div>
+</body>
+</html>
+                         
+
+
+
+
+  
+
+     

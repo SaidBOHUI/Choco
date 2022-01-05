@@ -1,0 +1,12 @@
+{% extends 'base_admin.html.twig' %}
+
+{% block title %}Edit TextArticle{% endblock %}
+
+{% block body %}
+    <h1 class='text-center'>Edit Text-Article</h1>
+
+    {{ include('text_article/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('text_article_index') }}" class="btn btn-retour">&#x2190;back to list</a>
+
+{% endblock %}

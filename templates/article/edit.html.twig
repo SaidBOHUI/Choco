@@ -1,0 +1,27 @@
+{% extends 'base_admin.html.twig' %}
+
+{% block title %}Edit Article{% endblock %}
+
+{% block body %}
+    <h1 class='text-center'>Edit Article</h1>
+
+    {{ include('article/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('article_index') }}" class="btn btn-retour">&#x2190;back to list</a>
+
+
+{% endblock %}
+{% block javascripts %}
+    <script>
+        const showNameImage = () => {
+            let input = document.querySelector('.custom-file-input')
+            let output_image = document.querySelector('small')
+                
+                input.addEventListener('change',()=>{
+                    console.log(input.files[0].name)
+                    output_image.innerText = input.files[0].name
+                })
+        }
+           showNameImage()
+    </script>
+{% endblock %}

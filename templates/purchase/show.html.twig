@@ -1,0 +1,66 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Purchase{% endblock %}
+
+{% block body %}
+    <h1>Purchase</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ purchase.id }}</td>
+            </tr>
+            <tr>
+                <th>FullName</th>
+                <td>{{ purchase.fullName }}</td>
+            </tr>
+            <tr>
+                <th>Emirate</th>
+                <td>{{ purchase.emirate }}</td>
+            </tr>
+            <tr>
+                <th>Produit</th>
+                <td>{{ purchase.produit ? purchase.produit|join(', ') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Adress</th>
+                <td>{{ purchase.adress }}</td>
+            </tr>
+            <tr>
+                <th>Payment</th>
+                <td>{{ purchase.payment ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>NumberOfPersons</th>
+                <td>{{ purchase.numberOfPersons }}</td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td>{{ purchase.email }}</td>
+            </tr>
+            <tr>
+                <th>Tel</th>
+                <td>{{ purchase.tel }}</td>
+            </tr>
+            <tr>
+                <th>Total</th>
+                <td>{{ purchase.total }}</td>
+            </tr>
+            <tr>
+                <th>Status</th>
+                <td>{{ purchase.status }}</td>
+            </tr>
+            <tr>
+                <th>CreatedAt</th>
+                <td>{{ purchase.createdAt ? purchase.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('purchase_index') }}">back to list</a>
+
+    <a href="{{ path('purchase_edit', {'id': purchase.id}) }}">edit</a>
+
+    {{ include('purchase/_delete_form.html.twig') }}
+{% endblock %}

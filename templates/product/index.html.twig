@@ -1,0 +1,68 @@
+{% extends 'base_admin.html.twig' %}
+
+{% block title %}Product management{% endblock %}
+
+{% block body %}
+   
+    <div class="container">
+        <h1 class='text-center'>Product management</h1>
+
+        <div class="text-center mb-4">
+            <a href="{{ path('product_new') }}" class="btn btn-add-panier">Create new</a>
+        </div>
+
+        <table class="table text-center">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Image</th>
+                    <th>Alternative text</th>
+                    <th>Price</th>
+                    <th>Availability</th>
+                    <th colspan='2'>Category</th>
+                    <th colspan="2">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for product in products %}
+                <tr>
+                    <td>{{ product.name }}</td>
+                    <td>{{ product.description }}</td>
+                    <td>
+                        <a href="{{ asset("images/upload/" ~ product.imgProduct )}}" data-lightbox="roadtrip">
+						<img src="{{ asset("images/upload/" ~ product.imgProduct )}}" class='dim'/></a>
+                    </td>
+                    <td>{{ product.alternativeText }}</td>
+                    <td>{{ product.price }}</td>
+                    <td>
+                    {% if product.availability == true %}
+                        yes
+                    {% else %}
+                        no
+                    {% endif %}
+                    </td>
+
+                    <td colspan='2'>{{ product.category }}</td>
+                    
+                    <td>
+                        <a class='btn btn-sm btn-edit' href="{{ path('product_edit', {'id': product.id}) }}">
+						<svg width="15" height="15"viewBox="0 0 24 24"xmlns="http://www.w3.org/2000/svg"fill="none"stroke="currentColor"stroke-width="2"stroke-linecap="round"stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" /><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" /></svg>
+						</a>
+                    </td>
+                    
+                    <td>
+						{{ include('product/_delete_form.html.twig') }}
+					</td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="10">no records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}
+

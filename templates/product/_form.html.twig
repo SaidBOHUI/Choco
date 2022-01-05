@@ -1,0 +1,39 @@
+<p>Required fields*</p>    
+
+{{ form_start(form) }}
+    <div class='mb-5'>
+        {{ form_row(form.name) }}
+    </div>
+
+    <div class='mb-5'>
+        {{ form_row(form.price) }}
+        <div id='output'></div> 
+    </div>
+
+    <div class='mb-5'>
+        {{ form_row(form.description) }}
+    </div>
+
+    <div class='mb-5'>
+        {{ form_row(form.imgProduct, { 'label': 'Image of the product' }) }}
+        <div id='output_img'></div>
+    </div>
+
+    <div class='mb-5'>
+        {{ form_row(form.alternativeText) }}
+    </div>
+
+    <div class='mb-5'>
+        {{ form_row(form.category) }}
+    </div>
+
+
+    <div class='mb-5'>
+        {{ form_row(form.availability) }}
+    </div>
+
+    <button class="btn btn-val">&#10004; {{ button_label|default('Save') }}</button>
+    {{ form_end(form) }}
+
+
+

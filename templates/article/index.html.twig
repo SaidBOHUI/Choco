@@ -1,0 +1,64 @@
+{% extends 'base_admin.html.twig' %}
+
+{% block title %}Article index{% endblock %}
+
+{% block body %}
+    <h1 class="text-center">Article index</h1>
+    <div class="text-center mb-50">
+        <a href="{{ path('page_index') }}" class="btn btn-retour">&#x2190;list of pages</a>
+    </div>
+    <div class="container">
+        <table class="table text-center">
+            {% for article in articles %}
+                    <tr class='table-info'>
+                        <th>Title</th>
+                        <td class='text-center'>{{ article.title }}</td>
+                        <td> 
+                            <a class='btn btn-sm btn-edit  mb-15' href="{{ path('article_edit', {'id': article.id}) }}">
+                                <svg width="15" height="15"viewBox="0 0 24 24"xmlns="http://www.w3.org/2000/svg"fill="none"stroke="currentColor"stroke-width="2"stroke-linecap="round"stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" /><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" /></svg>
+                            </a>
+                        </td>
+                        <td>
+                            <form method="post" action="{{ path('article_delete', {'id': article.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
+                                <input type="hidden" name="_method" value="DELETE">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ article.id) }}">
+                                <button class='btn btn-sm btn-danger' title="delete">Delete Article</button>
+                            </form>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Text</th>
+                        <td colspan='3'>{{ article.text }}</td>
+                    </tr>
+                    <tr>
+                        <th>Image</th>
+                        {% if article.image %}
+                        <td>
+                            <a href="{{ asset("images/upload/" ~ article.image )}}" data-lightbox="roadtrip">
+                            <img src="{{ asset("images/upload/" ~ article.image )}}" class='dim'/></a>
+                        </td>
+                        {% else %}
+                        <td></td>
+                        {% endif %}
+                        <td></td>
+                        <td></td>
+            
+                    </tr>
+                    <tr>
+                        <th>Page name</th>
+                        <td>{{ article.page }}</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+            {% else %}
+                <tr>
+                    <td colspan="4">no records found</td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+
+
+
+{% endblock %}

@@ -1,0 +1,9 @@
+{% for page in bottom %}
+
+        <li>					
+            <a href="{{path('page_show',{'slug' : page.slug}) }}" title="{{page.title}}">
+                <span>{{ page.title }}</span>
+            </a>
+        </li>	
+
+{% endfor %}

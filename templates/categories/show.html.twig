@@ -1,0 +1,137 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	{{ category.name }}
+{% endblock %}
+
+{% block body %}
+
+    <h1 class="text-center mb-15">{{category.name|upper }}</h1>
+
+	<section class="map-area-product" style="background-image: url('{{ asset('images/upload/' ~ category.banner )}}');">
+		<div class="card-bg">
+			<h2>order</h2>
+		</div>
+	</section>
+
+	<!--Liste des produits-->
+	<section class="contact-area">
+		<div class="container">
+
+			<div class="row">
+				<div class="col-12">
+					<div class="contact-content-area">
+						<div class="product-container">
+					
+							{% if category.products|length > 0 %}
+					
+								{% for product in category.products %}
+							
+									<div class="card-product">
+
+										<div class="card-product-img col-sm-3">
+											<a href="{{ asset('images/upload/' ~ product.imgProduct )}}" data-lightbox="roadtrip">
+												<img src="{{ asset('images/upload/' ~ product.imgProduct)}}" alt= {{ product.alternativeText }} class="product-img"/>
+											</a>
+										</div>
+
+
+										<div class="card-product-content">
+											<h3>{{ product.name }}</h3>
+											<p>{{ product.description }}</p>
+											<p class="price">{{product.price}} DHS</p>
+											
+											{% if product.availability == 1 %}
+												<div class="container-message" id="message-{{product.id}}"></div>
+												<button class="btn btn-add-panier add-cart" data-id ={{product.id}}>Add to Cart</button>
+											
+											{% else %}
+											<span>Victim of his own success</span>	
+											
+											{% endif %}
+										</div>
+									</div>	
+
+								{% endfor %}
+
+							{% else %}
+								<p>There is no product in this category</p>
+							
+							{% endif %}
+							
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+
+	<!-- ##### ARTICLE ##### -->
+	<section class="hero-area section-padding-100">
+		<div class="container text-center section-padding-0-100">
+			<h2>Nos prestations</h2>
+			<h3>Un savoir faire mit à votre service.</h3>
+			<p>
+				Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus at ex facilisis, 
+				condimentum mi vitae, sodales est. Nunc vestibulum vehicula tristique. 																																													                Donec quis enim ligula.
+			</p>
+		</div>
+	</section>
+
+
+	<!-- ##### BLOC ACTION  ##### -->
+	<section class="blog-content-area section-padding-100 section-action">
+		<div class="container text-center">
+			<h2>Découvrez nos produits</h2>
+			<p>Passez commande en ligne 48h à l'avance...</p>
+			<a href="index.html#categories" class="btn-action">Je découvre</a>
+		</div>
+	</section>
+{% endblock %}
+
+
+{% block javascripts %}
+	{# Fonction du panier #}
+	
+	<script>
+
+	// On va chercher l'id grace au dataset pour chaque element du foreach
+		let addCart = document.querySelectorAll('.add-cart')
+
+		addCart.forEach(element => {
+			element.addEventListener('click', (e) =>{
+				let id = e.target.dataset.id
+				sendData(id)
+			})
+		});
+
+		/**
+         * add to cart
+         * @param {string} id
+         */
+        const sendData = async (id) =>{
+            const response = await fetch(`/cart/add/${id}`)
+			const data = await response.json()
+			
+			showResponse(response.status , data , id)  
+        }
+
+		const showResponse = (status , data , id) =>{
+
+			let messageContainer = document.getElementById(`message-${id}`)
+			messageContainer.classList.add("active")
+			status === 201 ? messageContainer.style.color = "green" : messageContainer.style.color = "red"
+			messageContainer.innerText = data.message
+
+
+			setTimeout(() => {
+				messageContainer.innerText = ""
+				messageContainer.classList.remove("active")
+			}, 2000);
+
+		}
+
+
+	</script>
+{% endblock %}

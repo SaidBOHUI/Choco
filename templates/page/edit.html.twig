@@ -1,0 +1,139 @@
+{% extends 'base_admin.html.twig' %}
+
+{% block title %}Edit Page{% endblock %}
+{% form_theme form _self %}
+
+{% block _page_article_widget %}
+    {{ form_widget(form) }}
+    <button type='button' id='add-article' class='btn btn-article mb-50'>add an full article</button>
+{% endblock %}
+
+{% block _page_article_row %}
+    {{ form_widget(form)}}
+{% endblock %}
+
+ {% block _page_article_entry_widget %}
+    {{ form_row(form.title) }}
+    {{ form_row(form.text) }}
+    {{ form_row(form.image) }}
+    {{ form_row(form.alternativeText) }}
+{% endblock %} 
+
+{% block _page_textArticles_widget %}
+    {{ form_widget(form)}}
+    <button type='button' id='add-text-articles' class="btn btn-add-panier mb-50">add a text article</button>  
+{% endblock %}
+
+{% block _page_textArticles_row %}
+    {{ form_widget(form)}}
+{% endblock %}
+
+ {% block _page_textArticles_entry_widget %}
+    {{ form_row(form.title) }}
+    {{ form_row(form.subTitle) }}
+    {{ form_row(form.text) }}
+{% endblock %} 
+
+
+
+
+{% block body %}
+    <div class="container">
+            <h1 class='text-center'>Edit Page</h1>
+        <div class="container">
+            {{ include('page/_form.html.twig', {'button_label': 'Update'}) }}
+        <div class="text-center">
+            <a href="{{ path('page_index') }}" class="btn btn-retour">&#x2190;back to list</a>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+
+	{# recupération du nom du fichier -> Récupération de l'id du champ output -> A l'action 'change' le nom est placé dans le output, effectuer une boucle pour récupérer plusieurs fichiers #}
+	<script>
+     
+        /*********************************************************************/
+        /*                           ADD TEXTARTICLE
+        / ********************************************************************/
+                let $textcontainer = $('#page_textArticles');
+                let textindex = $textcontainer.find(':input').length;
+            $('#add-text-articles').click(function(e){
+                    e.preventDefault();
+                    addTextArticle($textcontainer);
+            });
+        function addTextArticle($textcontainer){
+            let tmp = $textcontainer.attr('data-prototype')
+            .replace(/__name__label/g, 'TextArticle n° ' + (textindex + 1))
+            .replace(/__name/g, textindex);
+            let $prototype = $(tmp) ;
+            deleteTextArticle($prototype)
+            $textcontainer.append($prototype);
+            textindex++;
+        }
+        
+    /*SUPPRIMER UN TEXTARTICLE*/
+        function deleteTextArticle($prototype){
+            let $deleteLink = $('<a href="#" class="btn btn-danger">Annuler</a>');
+            $prototype.append($deleteLink);
+            $deleteLink.click(function (e) {
+                $prototype.remove();
+                e.preventDefault(); // évite qu'un # apparaisse dans l'url
+                return false;
+            })
+        }       
+        /*********************************************************************/
+        /*                           ADD ARTICLE
+        / ********************************************************************/                let $container = $('#page_article');
+                let index = $container.find(':input').length;
+            $('#add-article').click(function(e){
+                  
+                e.preventDefault();
+            
+                addArticle($container);
+                let input = document.querySelectorAll('.custom-file-input') 
+                let output = document.querySelectorAll('small')
+                for (let index = 0; index < input.length; index++) {
+                    const element = input[index];
+                    element.addEventListener("change", function() {
+                        output[index].textContent = element.files[0].name
+                    });
+                }
+            });
+        function addArticle($container){
+            let tmp = $container.attr('data-prototype')
+            .replace(/__name__label/g, 'Article n° ' + (index + 1))
+            .replace(/__name/g, index);
+            let $prototype = $(tmp) ;
+            deleteArticle($prototype)
+            $container.append($prototype);
+            index++;
+        }
+/*SUPPRIMER UN ARTICLE*/
+    const deleteArticle = ($prototype) => {
+        let $deleteLink = $('<a href="#" class="btn btn-danger">Annuler</a>');
+        $prototype.append($deleteLink);
+        $deleteLink.click(function (e) {
+            $prototype.remove();
+            e.preventDefault(); // évite qu'un # apparaisse dans l'url
+            return false;
+        })
+    }            
+    // 1) Récupérer tous les champs d'upload
+    // 2) On crée un listener pour ecouter tous les changements sur l'input d'upload
+    // 3) Au change on ajoute l'image uploader ds la div output image
+    const showNameImage = () => {
+        let inputs = document.querySelectorAll('.custom-file-input')
+        let output_image = document.querySelectorAll('small')
+ 
+        for (let index = 0; index < inputs.length; index++) {
+            const element = inputs[index];
+        
+            element.addEventListener('change',()=>{
+                output_image[index].innerText = element.files[0].name
+            })
+        }
+    }
+    showNameImage()
+	</script>
+{% endblock %}
